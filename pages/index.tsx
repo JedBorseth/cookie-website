@@ -1,16 +1,54 @@
 import type { NextPage } from "next";
 import Navbar from "../components/Navbar";
-const Home: NextPage = () => {
-  const fetchData = async () => {
-    const fetchData = await fetch(
-      `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${QUERY}`
-    );
-  };
+import { createClient } from "next-sanity";
+import Featured from "../components/Featured";
+import Footer from "../components/Footer";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { cartTotalState } from "../atoms/cartStates";
+
+const Home: NextPage = ({ products }: any) => {
+  const { data: session } = useSession();
+  const [cartTotal, setCartTotal]: any = useRecoilState(cartTotalState);
+  useEffect(() => {
+    if (cartTotal.length <= 0) {
+      const tempArr = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        if (
+          localStorage.key(i) !== "nextauth.message" &&
+          localStorage.key(i) !== "ally-supports-cache"
+        ) {
+          tempArr.push({
+            id: localStorage.key(i),
+            count: Number(localStorage.getItem(localStorage.key(i))),
+          });
+        }
+      }
+      setCartTotal(tempArr);
+    }
+  }, []);
+
   return (
-    <div className="bg-neutral-600 min-h-screen p-5 text-white">
-      <Navbar />
-    </div>
+    <>
+      <div className="min-h-screen bg-neutral text-white">
+        <Navbar />
+        <Featured products={products} />
+      </div>
+      <Footer />
+    </>
   );
 };
 
 export default Home;
+
+export async function getStaticProps() {
+  const client = createClient({
+    projectId: "vk2oe4w2",
+    dataset: "production",
+    apiVersion: "2022-03-25",
+    useCdn: false,
+  });
+  const products = await client.fetch(`*[_type == "product"]`);
+  return { props: { products } };
+}

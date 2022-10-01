@@ -1,13 +1,26 @@
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useRecoilValue } from "recoil";
+import { cartTotalState } from "../atoms/cartStates";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const cartTotal = useRecoilValue(cartTotalState);
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 px-5">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl normal-case">daisyUI</a>
+        <Link href={router.pathname === "/" ? "#" : "/"}>
+          <button className="btn btn-ghost text-xl normal-case">
+            Jeds Cookies
+          </button>
+        </Link>
       </div>
       <div className="flex-none">
-        <div className="dropdown dropdown-end">
+        <div className="dropdown-end dropdown">
           <label tabIndex={0} className="btn btn-ghost btn-circle">
             <div className="indicator">
               <svg
@@ -24,26 +37,47 @@ const Navbar = () => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge indicator-item badge-sm">8</span>
+              <span className=" badge indicator-item badge-sm"></span>
             </div>
           </label>
           <div
             tabIndex={0}
-            className="card dropdown-content card-compact mt-3 w-52 bg-base-100 shadow"
+            className="card-compact card dropdown-content mt-3 w-52 bg-base-100 shadow"
           >
             <div className="card-body">
-              <span className="text-lg font-bold">8 Items</span>
+              <span className="text-lg font-bold">0 Items</span>
               <span className="text-info">Subtotal: $999</span>
               <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+                <Link href="/cart">
+                  <button className="btn btn-primary btn-block">
+                    View cart
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
-        <div className="dropdown dropdown-end">
+        <div className="dropdown-end dropdown">
           <label tabIndex={0} className="avatar btn btn-ghost btn-circle">
             <div className="w-10 rounded-full">
-              <img src="https://placeimg.com/80/80/people" />
+              {session && session.user?.image ? (
+                <Image
+                  src={session.user.image}
+                  width="80"
+                  height="80"
+                  alt="Profile"
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  fill="currentColor"
+                  viewBox="-4 -4 20 20"
+                >
+                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                </svg>
+              )}
             </div>
           </label>
           <ul
@@ -51,16 +85,29 @@ const Navbar = () => {
             className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
+              <a className="justify-between">Profile</a>
             </li>
             <li>
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              {session ? (
+                <a
+                  onClick={() => {
+                    signOut();
+                  }}
+                >
+                  Logout
+                </a>
+              ) : (
+                <a
+                  onClick={() => {
+                    signIn();
+                  }}
+                >
+                  Login
+                </a>
+              )}
             </li>
           </ul>
         </div>
