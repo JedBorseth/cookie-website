@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useRecoilState } from "recoil";
@@ -34,6 +34,10 @@ export default Cart;
 
 const Table = ({ cartDisplay, unique }: any) => {
   const [price, setPrice] = useState(0);
+  const input1 = useRef(null);
+  const input2 = useRef(null);
+  const refs = [input1, input2];
+
   const priceTotal = () => {
     let i = 0;
     cartDisplay.forEach((item: { price: number }) => {
@@ -51,7 +55,15 @@ const Table = ({ cartDisplay, unique }: any) => {
           <tr>
             <th>
               <label>
-                <input type="checkbox" className="checkbox" />
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  onClick={(e) => {
+                    refs.forEach((ref) => {
+                      ref.current.checked = e.target.checked;
+                    });
+                  }}
+                />
               </label>
             </th>
             <th>Title</th>
@@ -63,19 +75,32 @@ const Table = ({ cartDisplay, unique }: any) => {
         <tbody>
           {cartDisplay.length > 0 && (
             <>
-              {console.log(unique)}
               {unique.map(
-                (item: {
-                  price: number;
-                  _id: string;
-                  name: string;
-                  short_desc: string;
-                }) => {
+                (
+                  item: {
+                    price: number;
+                    _id: string;
+                    name: string;
+                    short_desc: string;
+                  },
+                  index
+                ) => {
+                  let i = 0;
+                  cartDisplay.map((quantity: { _id: string }) => {
+                    if (quantity._id === item._id) {
+                      i++;
+                    }
+                  });
+
                   return (
                     <tr key={item._id}>
                       <th>
                         <label>
-                          <input type="checkbox" className="checkbox" />
+                          <input
+                            type="checkbox"
+                            className="checkbox"
+                            ref={refs[index]}
+                          />
                         </label>
                       </th>
                       <td>
@@ -83,7 +108,7 @@ const Table = ({ cartDisplay, unique }: any) => {
                           <div>
                             <div className="font-bold">{item.name}</div>
                             <div className="text-sm opacity-50">
-                              ${item.price}
+                              ${item.price} x {i}
                             </div>
                           </div>
                         </div>
@@ -95,7 +120,7 @@ const Table = ({ cartDisplay, unique }: any) => {
                           Lorem ipsum dolor sit amet.
                         </span>
                       </td>
-                      <td>1</td>
+                      <td>{i}</td>
                       <th>
                         <button className="btn btn-ghost btn-xs">
                           View Product
