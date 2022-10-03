@@ -2,21 +2,13 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
-import { cartTotalState } from "../atoms/cartStates";
+import { cartState } from "../atoms/cartStates";
 const Featured = ({ products }: any) => {
   const { data: session } = useSession();
-  const [cartTotal, setCartTotal]: any = useRecoilState(cartTotalState);
-
+  const [cart, setCart]: any = useRecoilState(cartState);
   useEffect(() => {
-    if (cartTotal) {
-      cartTotal.forEach((item: { id: string; count: string }) => {
-        localStorage.setItem(item.id, item.count);
-      });
-    }
-    console.log(cartTotal);
-    console.log(localStorage);
-  }, [cartTotal]);
-
+    console.log(cart);
+  }, [cart]);
   return (
     <div className="md: relative grid w-full justify-center gap-5 pt-5 md:flex md:justify-evenly md:pt-12">
       {products && (
@@ -54,13 +46,7 @@ const Featured = ({ products }: any) => {
                       <button
                         className="btn btn-primary"
                         onClick={() => {
-                          const count =
-                            Number(localStorage.getItem(item._id)) + 1;
-
-                          setCartTotal([
-                            ...cartTotal,
-                            { id: item._id, count: count },
-                          ]);
+                          setCart([...cart, item]);
                         }}
                       >
                         Add to Cart

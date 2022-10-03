@@ -6,28 +6,10 @@ import Footer from "../components/Footer";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { cartTotalState } from "../atoms/cartStates";
+import { cartState } from "../atoms/cartStates";
 
 const Home: NextPage = ({ products }: any) => {
   const { data: session } = useSession();
-  const [cartTotal, setCartTotal]: any = useRecoilState(cartTotalState);
-  useEffect(() => {
-    if (cartTotal.length <= 0) {
-      const tempArr = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        if (
-          localStorage.key(i) !== "nextauth.message" &&
-          localStorage.key(i) !== "ally-supports-cache"
-        ) {
-          tempArr.push({
-            id: localStorage.key(i),
-            count: Number(localStorage.getItem(localStorage.key(i))),
-          });
-        }
-      }
-      setCartTotal(tempArr);
-    }
-  }, []);
 
   return (
     <>
