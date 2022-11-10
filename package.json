@@ -9,15 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sanity/image-url": "^1.0.1",
     "@sanity/types": "^2.34.0",
+    "@stripe/react-stripe-js": "^1.14.2",
+    "@stripe/stripe-js": "^1.42.1",
     "daisyui": "^2.31.0",
-    "next": "12.3.1",
+    "next": "^12.3.3",
     "next-auth": "^4.12.2",
     "next-sanity": "^0.8.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recoil": "^0.7.5",
-    "recoil-persist": "^4.2.0"
+    "recoil-persist": "^4.2.0",
+    "stripe": "^10.17.0"
   },
   "devDependencies": {
     "@types/node": "18.7.23",

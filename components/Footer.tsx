@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="footer items-center bg-neutral p-4 text-neutral-content">
       <div className="grid-flow-col items-center">
-        <p>Copyright © 2022 - All right reserved</p>
+        <p>Copyright © 2022 Jed Borseth - All rights reserved</p>
       </div>
       <div className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
         <a href="https://jedborseth.com">
