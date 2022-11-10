@@ -32,7 +32,7 @@ export default function App(): JSX.Element {
   }, [cart]);
 
   const appearance: any = {
-    theme: "stripe",
+    theme: "night",
   };
   const options = {
     clientSecret,
