@@ -8,8 +8,12 @@ import { cartState } from "../atoms/cartStates";
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
+const getVariable = (variable: string) => {
+  return variable;
+};
+
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  getVariable("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY")
 );
 
 export default function App(): JSX.Element {
@@ -27,8 +31,8 @@ export default function App(): JSX.Element {
       .then((data) => setClientSecret(data.clientSecret));
   }, [cart]);
 
-  const appearance = {
-    theme: "night",
+  const appearance: any = {
+    theme: "stripe",
   };
   const options = {
     clientSecret,

@@ -22,7 +22,7 @@ const Cart = () => {
     const checked = document.querySelectorAll("input:checked");
     if (checked.length > 0) {
       let cartCopy = [...cart];
-      checked.forEach((item) => {
+      checked.forEach((item: any) => {
         if (item.id !== "checkAll") {
           console.log("removing:", item.id);
           cartCopy = cartCopy.filter(
