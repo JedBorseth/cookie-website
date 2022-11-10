@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function App() {
+export default function App(): JSX.Element {
   const [clientSecret, setClientSecret] = React.useState("");
   const cart = useRecoilValue(cartState);
 
@@ -25,7 +25,7 @@ export default function App() {
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, []);
+  }, [cart]);
 
   const appearance = {
     theme: "night",

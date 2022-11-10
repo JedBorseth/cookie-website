@@ -83,7 +83,7 @@ const Table = ({ cartDisplay, unique, clearChecked }: any) => {
                   id="checkAll"
                   onClick={(e) => {
                     const input = document.querySelectorAll(".check");
-                    input.forEach((item) => {
+                    input.forEach((item: any) => {
                       item.checked = (e.target as HTMLInputElement).checked;
                     });
                   }}
