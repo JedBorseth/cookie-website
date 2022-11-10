@@ -14,7 +14,7 @@ const Navbar = () => {
   const [price, setPrice] = useState(0);
   const priceTotal = () => {
     let i = 0;
-    cart.forEach((item) => {
+    cart.forEach((item: { price: number }) => {
       i += item.price;
     });
     setPrice(Math.floor(i));
