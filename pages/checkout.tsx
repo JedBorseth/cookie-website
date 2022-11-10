@@ -13,7 +13,9 @@ const getVariable = (variable: string) => {
 };
 
 const stripePromise = loadStripe(
-  getVariable("NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY")
+  getVariable(
+    "pk_test_51M2PyKAsI6eNkS90IRrQLguf8SvWJV4cjvA8O3eE06V7KAxC1iH3Qr9jUTG07gYbEG79xqTmqHScd4J8XVqZtqpp00CisCrRET"
+  )
 );
 
 export default function App(): JSX.Element {
